@@ -1,0 +1,74 @@
+2.html
+
+
+
+<html>
+
+<head>
+    <title> Visitor Count </title>
+    <link href="styles.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="box-cont">
+            <div class="box-header" style="text-align:center;">
+                <h1>Hello !</h1>
+            </div>
+            <div class="box">
+                Hello Visitor!!
+                </br>
+                Display the visitor count
+                </br>
+                <form action="http://10.24.30.8/cgi-bin/k2.pl">
+                    <center><br><input type="submit" value="Display"><br></center>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+
+
+
+
+
+
+k2.pl
+
+
+#!/usr/bin/perl
+
+# Write a Perl program to keep track of the number of visitors visiting the web page and to
+# display this count of visitors, with proper headings. (use file handling)
+use strict;
+use CGI':standard';
+
+my $count;
+
+open (FILE, "<kvisit.txt");
+$count=<FILE>;
+close(FILE);
+open(FILE, ">kvisit.txt");
+$count++;
+print FILE "$count";
+close(FILE);
+
+print header;
+print start_html(
+    -head => [
+      Link( { -href => 'styles.css', -rel => 'stylesheet', -type => 'text/css'}),
+    ]);
+print "<div class=\"container\">
+        <div class=\"box-cont\">
+            <div class=\"box-header\">
+                VISITOR COUNT
+            </div>
+            <div class=\"box\">";
+print "<center><h1>You are the visitor number $count";
+print "</div>
+         </div>
+        </div>";
+print end_html( );

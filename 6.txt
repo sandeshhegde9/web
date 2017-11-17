@@ -1,0 +1,241 @@
+/var/www/html - html and php files
+
+
+
+----------------------------------------------------------------------------------------------------------------
+
+
+k.html
+
+
+
+<html>
+
+<head>
+    <title> MySQL - PHP </title>
+    <link href="styles.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="box-cont">
+            <div class="box-header" style="text-align:center;">
+                <h1>Hello !</h1>
+            </div>
+            <div class="box" style="text-align:center;">
+                Hello Visitor!!
+                </br>
+                Enter your information
+                </br>
+                <form action="k1.php" method="post">
+                    <table style="text-align:center;margin:20px auto">
+                        <tr>
+                            <td>Name:</td>
+                            <td><input type="text" name="name" /></td>
+                        </tr>
+                        <tr>
+                            <td>Phone:</td>
+                            <td><input type="number" name="phone" /></td>
+                        </tr>
+                        <tr>
+                            <td>Email:</td>
+                            <td><input type="email" name="mail" /></td>
+                        </tr>
+                        <tr>
+                            <td>Password:</td>
+                            <td><input type="password" name="pwd" /></td>
+                        </tr>
+                        <tr>
+                            <td>Country:</td>
+                            <td><input type="text" name="country" /></td>
+                        </tr>
+                        <tr>
+                            <td>State:</td>
+                            <td><input type="text" name="state" /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><input type="submit" value="Submit" /></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+
+
+---------------------------------------------------------------------------------------------------------------------
+
+
+
+k1.php
+
+
+
+<html>
+<head>
+    <title> MySQL - PHP </title>
+    <link href="styles.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="box-cont">
+            <div class="box-header" style="text-align:center;">
+                <h1>Search</h1>
+            </div>
+            <div class="box" style="text-align:center;">
+                
+<?php
+    $servername = "localhost";
+    $username = "cs7b2"; //cs7b1
+    $password = "cs7123";     //cs7123
+
+$con = new mysqli($servername, $username, $password);
+
+if ($con->connect_error) {
+    die("Connection failed: " . $con->connect_error);
+}   
+    echo "Connected successfully ";
+// Create database 
+$dbname = "college";
+
+$sql = "CREATE DATABASE IF NOT EXISTS " . $dbname;
+if ($con->query($sql) === TRUE) {
+    echo "DB OK ";
+} else {
+    echo "Error creating database: " . $con->error;
+}
+
+mysqli_select_db($con, $dbname);
+
+//$attributes = array('name', 'phone', 'mail', 'pwd', 'country', 'state');
+
+$sql = "CREATE TABLE IF NOT EXISTS details (
+            name varchar(100) PRIMARY KEY NOT NULL,
+            phone varchar(100) NOT NULL,
+            mail varchar(100),
+            pwd varchar(100),
+            country varchar(100),
+            state varchar(100)
+        )";
+
+if($con->query($sql)){
+    echo ' Table OK ';
+}else{
+    echo 'Error creating table' . $con->error;
+}
+
+
+    mysqli_query($con,$sql);
+
+    $name = $_POST['name'];
+    $phone = $_POST['phone'];
+    $mail = $_POST['mail'];
+    $pwd = $_POST['pwd'];
+    $country = $_POST['country'];
+    $state = $_POST['state'];
+
+    $sql="INSERT INTO details (name,phone,mail,pwd,country,state) VALUES 
+    ('$name','$phone','$mail',$pwd,'$country','$state')";
+
+    $result = mysqli_query($con,$sql);
+    if($result){
+        ?>
+        Data values inserted successfully
+    <?php
+    }
+    else{
+        echo mysqli_error($con);
+        ?>
+                Error in inserting data values 
+    <?php
+    }
+    mysqli_close($con);
+    ?>
+
+            <hr>
+            Enter a state to search user details of that state
+            </br>
+            <form action="k2.php" method="post">
+                    <table style="text-align:center;margin:20px auto">
+                        <tr>
+                            <td>State:</td>
+                            <td><input type="text" name="state" /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><input type="submit" value="Search" /></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+
+
+---------------------------------------------------------------------------------------------------------------------
+
+
+k2.php
+
+
+<html>
+
+<head>
+    <title> MySQL - PHP </title>
+    <link href="styles.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="box-cont">
+            <div class="box-header" style="text-align:center;">
+                <h1>Search Results</h1>
+            </div>
+            
+            
+            <div class="box" style="text-align:center;">
+            <?php
+                $state = $_POST['state'];
+                print "Here are your search results for query state='$state'";
+            ?>
+                </br>
+                <table class="ntable" style="text-align:center;margin:20px auto">
+                <?php
+                    $servername = "localhost";
+    $username = "cs7b2"; //cs7b1
+    $password = "cs7123";     //cs7123
+    $dbname = "college";
+$con = new mysqli($servername, $username, $password, $dbname);
+
+                   
+
+                    $sql="SELECT * FROM details WHERE state like '$state'";
+
+                    $result = mysqli_query($con,$sql);
+                    if($result){
+                        print "<tr><td>NAME</td><td>PHONE</td><td>EMAIL</td><td>COUNTRY</td><td>STATE</td></tr>";
+                        while($row = mysqli_fetch_assoc($result)){
+                            print "<tr><td>".$row['name']."</td><td>".$row['phone']."</td><td>"
+                            .$row['mail']."</td><td>".$row['country']."</td><td>"
+                            .$row['state']."</td></tr>";
+                        }
+                    }
+                    else
+                        print "Error finding persons"
+                ?>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

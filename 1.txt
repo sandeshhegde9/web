@@ -1,0 +1,43 @@
+- 1.html
+
+  <html>
+    <form action="http://10.24.30.8/cgi-bin/clk.pl">
+        <center>
+            <input type=submit value=Click_to_display_time>
+        </center>
+    </form>
+ </html>
+
+
+
+
+
+- clk.pl
+
+
+#!/usr/bin/perl
+use CGI ':standard';
+print "Refresh: 1\n";
+print header(),
+start_html(-title=>"Digital clock",-bgcolor=>"red",-text=>"yellow");
+($s,$m,$h,$day,$mon,$year)=localtime(time);
+$datetime=localtime;
+if($h==12)
+{
+$ampm="pm";
+}
+elsif($h>=13)
+{
+$ampm="pm";
+$h=$h-12;
+}
+else
+{
+$ampm="am";
+}
+print br,br,"The current system is $h:$m:$s $ampm<br>";
+$mon++;
+$year=$year+1900;
+print "Date:$day/$mon/$year<br>";
+print h1,"$datetime";
+print end_html();

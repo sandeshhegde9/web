@@ -1,0 +1,153 @@
+save in /var/www/html/foldername - php file
+
+open php file from the local firefox browser
+
+---------------------------------------------------------------------------------------------------------------
+
+4.php
+
+
+<!-- Write a PHP program to store current date-time in a COOKIE and display the “Last visited on
+‟date-time on the web page upon reopening of the same page. -->
+
+<html>
+
+<head>
+    <title> PHP - Cookies </title>
+    <link href="styles.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="box-cont">
+            <div class="box-header" style="text-align:center;">
+                <h2>Cookie Power</h2>
+            </div>
+            <div class="box" style="text-align:center;">
+                Hello Visitor!!
+                </br>
+                <?php
+                    $duration=time()+60*60*24*60;
+                    $found=0;
+                    $visit=0;
+                    if(isset($_COOKIE[$visit]))
+                    {
+                    $found=1;
+                    $lastvisit=$_COOKIE[$visit];
+                    }
+                    setcookie($visit,date("m/d/y-G:i:s"),$duration);
+                    print "<center>";
+                    if($found==1)
+                    {
+                    print "<h2>Welcome back, You have visited on
+                    $lastvisit</h2>";
+                    }
+                    else
+                    {
+                    print "<h3>Welcome to this website</h3>";
+                    }
+                    print "</center>";
+                ?>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+
+
+
+styles.css
+
+
+body {
+    background: url("img.jpg");
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.box-header {
+    padding: 10px;
+    font-size: 20px;
+    text-transform: uppercase;
+    background: #A5A5E5;
+}
+
+.box-cont {
+    border: 1px solid #E0E0E0;
+    margin: 10px;
+}
+
+.box {
+    padding: 10px 10px 10px 30px;
+    background: white;
+    display: block;
+    overflow: hidden;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.oblique {
+    font-style: oblique;
+}
+
+.one-third {
+    width: calc(30% - 5px);
+    float: left;
+    padding: 5px;
+    min-height: 250px;
+    border: 1px solid black;
+    background-image: url("img.jpg");
+}
+
+.mylink {
+    color: red;
+    text-decoration: none;
+}
+
+.mylink:hover {
+    color: blue;
+    text-decoration: underline;
+    font-style: oblique;
+}
+
+.mylink:visited {
+    color: purple;
+    text-decoration: none;
+    font-style: italic;
+}
+
+.mylink:active {
+    color: green;
+}
+
+table {
+    border: 0px;
+}
+
+table th,
+table td {
+    font-size: 15px !important;
+    text-align: center !important;
+    border: 0px;
+    padding: 5px;
+}
+
+.ntable {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.ntable th,
+.ntable td {
+    font-size: 15px !important;
+    text-align: center !important;
+    border: 1px solid black;
+    padding: 5px;
+}
